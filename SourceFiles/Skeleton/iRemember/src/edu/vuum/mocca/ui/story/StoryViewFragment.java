@@ -48,6 +48,8 @@ University of Maryland to appear in their names.
 
 package edu.vuum.mocca.ui.story;
 
+import java.io.File;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -63,6 +65,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.webkit.WebView.FindListener;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.MediaController;
@@ -222,19 +225,20 @@ public class StoryViewFragment extends Fragment {
 			
 			String audioLinkPath = String.valueOf(storyData.audioLink).toString();
 			
-			// TODO - Set up audio to play back on click. For this part we can easily parse the audio
+			// OK - Set up audio to play back on click. For this part we can easily parse the audio
 			// as a ringtone and play it back as such. Use the RingtonManager function getRingtone on
 			// the audioLinkPath to create the ringtone
+			Uri ringtoneUri = Uri.parse( audioLinkPath );
 			
-			final Ringtone ringtone = null;
+			final Ringtone ringtone = RingtoneManager.getRingtone(getActivity().getApplicationContext(), ringtoneUri);
 			
 			
 			audioButton.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
 					
-					// TODO - Play the ringtone
-					
+					// OK - Play the ringtone
+					ringtone.play();
 
 					
 				}
@@ -247,23 +251,26 @@ public class StoryViewFragment extends Fragment {
 			// Set up video playback using the MediaController android widget
 			// and the video view already set up in the layout file.
 			
-			// TODO - Create a new MediaController for this activity 
-		
+			// OK - Create a new MediaController for this activity 
+			MediaController mediaController = new MediaController(getActivity(), true);
 
-			// TODO - The MediaController needs an anchorview. Anchor the Media Controller
+			// OK - The MediaController needs an anchorview. Anchor the Media Controller
 			// to the VideoView, videoLinkView, with the function setAnchorView()
+			VideoView videoView = (VideoView) getView().findViewById(R.id.story_view_value_video_link);
+			mediaController.setAnchorView(videoView);
 			
-			
-			
-			// TODO - Now the VideoView, videoLinkView, needs to have a Media Controller set to it
+			// OK - Now the VideoView, videoLinkView, needs to have a Media Controller set to it
 			// use the setMediaController function from the VideoView to set it to the new Media Controller
+			videoView.setMediaController(mediaController);
 			
 			
-			// TODO - Now we need to set the URI for the VideoView, use the setVideoURI function on the
+			// OK - Now we need to set the URI for the VideoView, use the setVideoURI function on the
 			//  videoLinkPath string from before.
+			videoView.setVideoURI( Uri.parse(videoLinkPath) );
 			
 			
-			// TODO - Start the video, using the start function on the VideoView
+			// OK - Start the video, using the start function on the VideoView
+			videoView.start();
 			
 			
 			// Display the image data
@@ -272,9 +279,10 @@ public class StoryViewFragment extends Fragment {
 			
 			String imageMetaDataPath = String.valueOf(storyData.imageLink).toString();
 			
-			// TODO - Set the URI of the ImageView to the image path stored in the string
+			// OK - Set the URI of the ImageView to the image path stored in the string
 			// imageMetaDataPath, using the setImageURI function from the ImageView
-			
+			ImageView imageView = (ImageView) getView().findViewById(R.id.story_view_value_image_meta_data);			
+			imageView.setImageURI( Uri.parse(imageMetaDataPath) );
 			
 			
 			Long time = Long.valueOf(storyData.storyTime);
