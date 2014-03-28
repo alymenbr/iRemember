@@ -232,18 +232,17 @@ public class CreateStoryActivity extends StoryActivityBase {
 	private void launchSoundIntent() {
 		
 		// OK - Create a new intent to launch the SoundRecordActivity activity
-		Intent intent = new Intent();
+		Intent intent = new Intent(this.getBaseContext(), SoundRecordActivity.class);
 
-		
 		// OK - Use getOutputMediaFile() to create a new 
 		// filename for this specific sound file
 		File file = getOutputMediaFile(MEDIA_TYPE_AUDIO);
-		String fileName = file.getName();
-		
+		String filePath = file.getAbsolutePath();
+		fragment.audioPath = filePath;
 		
 		// OK - Add the filename to the Intent as an extra. Use the Intent-extra name
 		// from the SoundRecordActivity class, EXTRA_OUTPUT
-		intent.putExtra(SoundRecordActivity.EXTRA_OUTPUT, fileName);
+		intent.putExtra(SoundRecordActivity.EXTRA_OUTPUT, filePath);
 		
 		// OK - Start a new activity for result, using the new intent and the request
 		// code MIC_SOUND_REQUEST
@@ -263,6 +262,7 @@ public class CreateStoryActivity extends StoryActivityBase {
 		// OK - Set the imagePath for this image file using the pre-made function
 		// getOutputMediaFile to create a new filename for this specific image;
 		Uri file = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+		fragment.imagePath = file;
 
 		// OK - Add the filename to the Intent as an extra. Use the Intent-extra name
 		// from the MediaStore class, EXTRA_OUTPUT
@@ -285,6 +285,7 @@ public class CreateStoryActivity extends StoryActivityBase {
 		// OK - Set the fileUri for this video file using the pre-made function
 		// getOutputMediaFile to create a new filename for this specific video;
 		Uri file = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);
+		fragment.fileUri = file;		
 		
 
 		// OK - Add the filename to the Intent as an extra. Use the Intent-extra name
